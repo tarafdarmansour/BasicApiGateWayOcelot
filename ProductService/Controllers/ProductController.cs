@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 namespace ProductService.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     public class ProductController : ControllerBase
     {
         private static readonly string[] _productSampleList = new[]

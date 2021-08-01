@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 namespace CustomerService.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     public class CustomerController : ControllerBase
     {
         private readonly List<Customer> _customers;
