@@ -16,32 +16,67 @@ namespace APIGateWay
     {
         public static void Main(string[] args)
         {
-            new WebHostBuilder()
-               .UseIIS()
-               .UseContentRoot(Directory.GetCurrentDirectory())
-               .ConfigureAppConfiguration((hostingContext, config) =>
-               {
-                   config
-                       .SetBasePath(hostingContext.HostingEnvironment.ContentRootPath)
-                       .AddJsonFile("appsettings.json", true, true)
-                       .AddJsonFile($"appsettings.{hostingContext.HostingEnvironment.EnvironmentName}.json", true, true)
-                       .AddJsonFile($"Configuration.{hostingContext.HostingEnvironment.EnvironmentName}.json",false,true)
-                       .AddEnvironmentVariables();
-               })
-               .ConfigureServices(s => {
-                   s.AddOcelot();
-               })
-               .ConfigureLogging((hostingContext, logging) =>
-               {
-                   //add your logging
-               })
-               .UseIISIntegration()
-               .Configure(app =>
-               {
-                   app.UseOcelot().Wait();
-               })
-               .Build()
-               .Run();
+            var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+
+            if (environment == Environments.Development)
+            {
+                new WebHostBuilder()
+                   .UseIIS()
+                   .UseContentRoot(Directory.GetCurrentDirectory())
+                   .ConfigureAppConfiguration((hostingContext, config) =>
+                   {
+                       config
+                           .SetBasePath(hostingContext.HostingEnvironment.ContentRootPath)
+                           .AddJsonFile("appsettings.json", true, true)
+                           .AddJsonFile($"appsettings.{hostingContext.HostingEnvironment.EnvironmentName}.json", true, true)
+                           .AddJsonFile($"Configuration.{hostingContext.HostingEnvironment.EnvironmentName}.json", false, true)
+                           .AddEnvironmentVariables();
+                   })
+                   .ConfigureServices(s =>
+                   {
+                       s.AddOcelot();
+                   })
+                   .ConfigureLogging((hostingContext, logging) =>
+                   {
+                       //add your logging
+                   })
+                   .UseIISIntegration()
+                   .Configure(app =>
+                   {
+                       app.UseOcelot().Wait();
+                   })
+                   .Build()
+                   .Run();
+            }
+            else
+            {
+                new WebHostBuilder()
+                   .UseKestrel()
+                   .UseContentRoot(Directory.GetCurrentDirectory())
+                   .ConfigureAppConfiguration((hostingContext, config) =>
+                   {
+                       config
+                           .SetBasePath(hostingContext.HostingEnvironment.ContentRootPath)
+                           .AddJsonFile("appsettings.json", true, true)
+                           .AddJsonFile($"appsettings.{hostingContext.HostingEnvironment.EnvironmentName}.json", true, true)
+                           .AddJsonFile($"Configuration.{hostingContext.HostingEnvironment.EnvironmentName}.json", false, true)
+                           .AddEnvironmentVariables();
+                   })
+                   .ConfigureServices(s =>
+                   {
+                       s.AddOcelot();
+                   })
+                   .ConfigureLogging((hostingContext, logging) =>
+                   { })
+                   .UseIISIntegration()
+                   .Configure(app =>
+                   {
+                       app.UseOcelot().Wait();
+                   })
+                   .Build()
+                   .Run();
+            }
+
         }
     }
 }

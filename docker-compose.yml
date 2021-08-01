@@ -1,0 +1,33 @@
+version: '3.4'
+
+services:
+
+  apigateway:
+    image: basicapigatewayocelot/apigateway:1.0
+    build:
+      context: .
+      dockerfile: APIGateWay/Dockerfile
+    networks:
+      - mynetwork
+    ports:
+      - 5101:80
+
+  customerservice:
+    image: basicapigatewayocelot/customerservice:1.0
+    build:
+      context: .
+      dockerfile: CustomerService/Dockerfile
+    networks:
+      - mynetwork
+
+  productservice:
+    image: basicapigatewayocelot/productservice:1.0
+    build:
+      context: .
+      dockerfile: ProductService/Dockerfile
+    networks:
+      - mynetwork
+ 
+networks:
+  mynetwork: 
+    driver: bridge
